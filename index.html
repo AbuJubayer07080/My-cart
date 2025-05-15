@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Summary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-400 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white w-full max-w-sm rounded-lg shadow-md" id="orderContainer">
+
+   
+
+    <!-- Express Delivery -->
+    <div class="px-4 py-3 border-b flex items-center space-x-2 font-semibold text-gray-700">
+      <span>🚚</span>
+      <span>Express Delivery</span>
+    </div>
+
+    <!-- Item Template Start -->
+<div class="product-item flex px-4 py-3 border-b space-x-3 items-center" data-id="item1" id="item1">
+  <div class="flex flex-col items-center space-y-1">
+    <button class="text-sm font-bold" onclick="changeQuantity('item1', 1)">▲</button>
+    <div class="text-center text-sm font-semibold" id="qty-item1">1</div>
+    <button class="text-sm font-bold" onclick="changeQuantity('item1', -1)">▼</button>
+  </div>
+  <img src="image/image one.webp" alt="Chillies" class="w-8 h-8 rounded-full" />
+  <div class="flex-1">
+    <div class="text-sm font-medium text-gray-800">Dried Chillies (Shukna Morich)</div>
+    <div class="text-xs text-gray-500">৳59/100 gm</div>
+  </div>
+  <div class="flex items-center space-x-2">
+    <div class="text-sm font-semibold text-gray-700" id="price-item1">৳ 59</div>
+    <button onclick="removeItem('item1')" class="text-gray-400 hover:text-red-500 font-bold text-xl leading-none">&times;</button>
+  </div>
+</div>
+
+<!-- Item 2 -->
+<div class="product-item flex px-4 py-3 border-b space-x-3 items-center" data-id="item2" id="item2">
+  <div class="flex flex-col items-center space-y-1">
+    <button class="text-sm font-bold" onclick="changeQuantity('item2', 1)">▲</button>
+    <div class="text-center text-sm font-semibold" id="qty-item2">1</div>
+    <button class="text-sm font-bold" onclick="changeQuantity('item2', -1)">▼</button>
+  </div>
+  <img src="image/image two.webp" alt="Cardamom" class="w-8 h-8 rounded-full" />
+  <div class="flex-1">
+    <div class="text-sm font-medium text-gray-800">Green Cardamom (Sobuj Elachi) Whole</div>
+    <div class="text-xs text-gray-500">৳329/50 gm</div>
+  </div>
+  <div class="flex items-center space-x-2">
+    <div class="text-sm font-semibold text-gray-700" id="price-item2">৳ 329</div>
+    <button onclick="removeItem('item2')" class="text-gray-400 hover:text-red-500 font-bold text-xl leading-none">&times;</button>
+  </div>
+</div>
+
+
+    
+
+    <!-- Order Button -->
+    <div class="flex justify-between items-center px-4 py-3 bg-red-500 text-white font-semibold text-sm rounded-b-lg">
+      <button onclick="placeOrder()" class="w-full text-left">Place Order</button>
+      <div class="text-lg" id="totalAmount">৳ 388</div>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const prices = {
+      item1: 59, // per 100gm
+      item2: 329 // per 50gm
+    };
+
+    const quantities = {
+      item1: 1,
+      item2: 1
+    };
+
+    function changeQuantity(itemId, change) {
+      quantities[itemId] = Math.max(1, quantities[itemId] + change);
+      document.getElementById(`qty-${itemId}`).textContent = quantities[itemId];
+
+      // Calculate price
+      const unitPrice = prices[itemId];
+      const itemPrice = itemId === 'item1'
+        ? unitPrice * quantities[itemId]
+        : unitPrice * quantities[itemId];
+      document.getElementById(`price-${itemId}`).textContent = `৳ ${itemPrice}`;
+
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const item1Total = prices.item1 * quantities.item1;
+      const item2Total = prices.item2 * quantities.item2;
+      const total = item1Total + item2Total;
+
+      document.getElementById('totalAmount').textContent = `৳ ${total}`;
+    }
+
+    function removeItem(itemId) {
+  // Remove item from DOM
+  const item = document.getElementById(itemId);
+  if (item) item.remove();
+
+  // Remove price tracking
+  delete prices[itemId];
+  delete quantities[itemId];
+
+  // Recalculate total
+  updateTotal();
+  document.getElementById('totalAmount').textContent = `৳ ${total}`
+}
+
+   
+  </script>
+
+</body>
+</html>
